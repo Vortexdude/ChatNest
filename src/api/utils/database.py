@@ -1,14 +1,8 @@
 from typing import Callable
-from src.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from contextlib import AbstractContextManager, contextmanager
 from sqlalchemy.orm import Session, sessionmaker, scoped_session
-
-
-engine = create_engine(url=settings.DATABASE_URL, echo=True)
-
-SessionLocal = sessionmaker(autoflush=False, bind=engine)
 
 Base = declarative_base()
 

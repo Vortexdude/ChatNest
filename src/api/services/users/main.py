@@ -1,4 +1,6 @@
 from .repository import UserRepository
+from src.api.exceptions.errors import NotFountError
+from fastapi import Response
 
 
 class UserService:
@@ -8,11 +10,24 @@ class UserService:
     def get_users(self):
         return self._user_repository.get_all()
 
-    def get_user_by_id(self, user_id: int):
+    def get_user_by_id(self, user_id: str):
         return self._user_repository.get_by_id(user_id)
 
     def create_user(self, data):
-        return self._user_repository.add(data)
+        try:
+            entity = self._user_repository.get_by_name(data.username)
+            if entity:
+                return {"status": "user already exits"}
+            entity = self._user_repository.get_by_email(data.email)
+            if entity:
+                return {"status": "user already exits"}
+        except NotFountError:
+            return self._user_repository.add(data)
 
-    def delete_by_user_id(self, user_id: int):
-        return self._user_repository.delete_by_id(user_id)
+    def delete_by_user_id(self, user_id: str):
+        try:
+            self._user_repository.delete_by_id(user_id)
+        except NotFountError:
+            return Response(status_code=404)
+        else:
+            return Response(status_code=204)
