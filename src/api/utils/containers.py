@@ -1,6 +1,6 @@
-from dependency_injector import containers, providers
 from .database import Database
-from src.api.services.users.main import UserService, UserRepository
+from dependency_injector import containers, providers
+from src.api.services.users import UserService, UserRepository
 
 
 class Container(containers.DeclarativeContainer):

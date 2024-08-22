@@ -1,14 +1,42 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, status
 from dependency_injector.wiring import inject, Provide
 from src.api.utils.containers import Container
-from src.api.services.users.main import UserService, UserRepository
-from src.api.schema.users import UserResponse, UserCreate
-from src.api.models.users import User
-
-route = APIRouter()
+from src.api.services.users import UserService
+from src.api.exceptions.errors import NotFountError
+from src.api.schema.users import UserCreate
 
 
-@route.get("/users")
+tags = ['user_repo']
+router = APIRouter(tags=tags)
+
+
+@router.get("/users")
 @inject
-def get_users(user_service: UserService = Depends(Provide[Container.user_service])):
+def get_list(user_service: UserService = Depends(Provide[Container.user_service])):
     return user_service.get_users()
+
+
+@router.get("/user/{user_id}")
+@inject
+def get_by_id(user_id: int, user_service: UserService = Depends(Provide[Container.user_service])):
+    try:
+        return user_service.get_user_by_id(user_id)
+    except NotFountError:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+
+
+@router.post("/users", status_code=status.HTTP_201_CREATED)
+@inject
+def add(data: UserCreate, user_service: UserService = Depends(Provide[Container.user_service])):
+    return user_service.create_user(data)
+
+
+@router.delete("/user/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@inject
+def delete(user_id: int, user_service: UserService = Depends(Provide[Container.user_service])):
+    try:
+        user_service.delete_by_user_id(user_id)
+    except NotFountError:
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        return Response(status_code=status.HTTP_204_NO_CONTENT)

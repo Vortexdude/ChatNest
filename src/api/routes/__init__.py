@@ -7,4 +7,4 @@ router = APIRouter()
 
 for route in ENABLE_ROUTE:
     module = import_module(f"src.api.routes.{route}")
-    router.include_router(module.route)
+    router.include_router(module.router)
