@@ -1,8 +1,35 @@
 from pathlib import Path
 from functools import lru_cache
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+load_dotenv()
 project_home_path = Path(__file__).resolve().parent.parent
+
+
+class PostgresSecret(BaseSettings):
+    user: str
+    password: str
+    db: str
+    host: str = "127.0.0.1"
+    port: int
+
+    model_config = SettingsConfigDict(env_prefix="POSTGRES_", )
+
+
+class DATABASE:
+    @property
+    def url(self):
+        _pg: PostgresSecret = PostgresSecret()
+        POSTGRES = {
+            'user': _pg.user,
+            'pw': _pg.password,
+            'host': _pg.host,
+            'db': _pg.db,
+            'port': str(_pg.port),
+        }
+
+        return "postgresql+psycopg2://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s" % POSTGRES
 
 
 class Setting(BaseSettings):
@@ -20,6 +47,7 @@ class Setting(BaseSettings):
     SERVER_HOST: str = '0.0.0.0'
     SERVER_PORT: int = 5000
     DEBUG: bool = False
+    DATABASE_URL: str = DATABASE().url
 
 
 @lru_cache
