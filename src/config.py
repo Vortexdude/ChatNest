@@ -48,6 +48,7 @@ class Setting(BaseSettings):
     SERVER_PORT: int = 5000
     DEBUG: bool = False
     DATABASE_URL: str = DATABASE().url
+    template_dir: str = 'src/web/templates'
 
 
 @lru_cache

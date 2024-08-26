@@ -1,0 +1,22 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: chatnest
+    environment:
+      - "POSTGRES_HOST: db"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16.4
+    container_name: chatnestdb
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: development
+    ports:
+      - "5432:5432"
