@@ -15,6 +15,8 @@ class UserService:
 
     def create_user(self, data):
         try:
+            if not data.username or not data.email or data.password:
+                return Response(status_code=204)
             entity = self._user_repository.get_by_name(data.username)
             if entity:
                 return {"status": "user already exits"}

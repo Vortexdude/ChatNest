@@ -36,7 +36,19 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Welcome to ChatServer</h1>
-            <p class="lead">Your go-to chat application for seamless communication with friends, family, and colleagues. Connect with multiple users, share messages instantly, and enjoy a smooth chat experience.</p>
+            <p class="lead">Here are the available online users</p>
+        </div>
+        <div class="box-container">
+            <div class="box">
+                <h2>Online users</h2>
+                <ul>
+                    <li><span>1</span><a href="#">User 1</a></li>
+                    <li><span>2</span><a href="#">User 2</a></li>
+                    <li><span>3</span><a href="#">User 3</a></li>
+                    <li><span>4</span><a href="#">User 4</a></li>
+                    <li><span>5</span><a href="#">User 5</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -47,7 +59,15 @@
             <input type="text" id="messageText" autocomplete="off"/>
             <button>Send</button>
     </form>
-    <ul id='messages'></ul>
+    <div class="list">
+        <h5>Messages - </h5>
+        <ul id='messages'>
+            <li><span>first message</span></li>
+            <li><span>Second message</span></li>
+            <li><span>Third message</span></li>
+            <li><span>Fourth message</span></li>
+        </ul>
+    </div>
     <div class="footer">
         <p>&copy; 2024 ChatNest. All rights reserved.</p>
     </div>

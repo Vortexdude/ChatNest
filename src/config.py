@@ -2,6 +2,7 @@ from pathlib import Path
 from functools import lru_cache
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Optional
 
 load_dotenv()
 project_home_path = Path(__file__).resolve().parent.parent
@@ -11,7 +12,7 @@ class PostgresSecret(BaseSettings):
     user: str
     password: str
     db: str
-    host: str = "127.0.0.1"
+    host: Optional[str] = '127.0.0.1'
     port: int
 
     model_config = SettingsConfigDict(env_prefix="POSTGRES_", )

@@ -1,9 +1,23 @@
-SHELL := bash
+LOCAL_EXEC := /bin/bash -c
 
-.PHONY: apply
+$(info ------Welcome to Project Developement------)
 
-apply:
-	docker compose -f docker/docker-compose.yml up --remove-orphans --build -d
+ifneq ($(app),)
+ARGS += --app ${app}
+endif
 
+ifneq ($(env),)
+ARGS += --env ${env}
+endif
+
+.PHONY: start
+start:
+	@$(LOCAL_EXEC) "(./docker/runner --action $@ ${ARGS})"
+
+.PHONY: stop
 stop:
-	docker compose -f docker/docker-compose.yml down
+	@$(LOCAL_EXEC) "(./docker/runner --action $@ ${ARGS})"
+
+.PHONY: logs
+logs:
+	@$(LOCAL_EXEC) "(./docker/runner --action $@ ${ARGS})"

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+function argparse() {
+    while [ "$1" != "" ]; do
+        case $1 in
+            --action )
+                ACTION="$2";
+                shift
+                ;;
+            --env )
+                ENV="$2";
+                shift
+                ;;
+            --app )
+                APP="$2";
+                shift
+                ;;
+            * )
+                args+=$("$1")
+                ;;
+        esac
+        shift
+    done
+}
+function stop_container() {
+    local _cont=${1:-1}
+    [ "${_cont}" == "1" ] && echo "No container specified" && return 1;
+    id=$(docker ps --format '{{.ID}}={{.Names}}' | grep "$_cont$" | cut -d= -f1)
+    [ -z "$id" ] && echo "App Container is not Running" && return 1;
+    echo "[DEBUG] Container ${_cont} Stopping"
+    docker container stop $id >/dev/null
+    echo "[DEBUG] Container ${_cont} Stopped"
+    return 0
+}
