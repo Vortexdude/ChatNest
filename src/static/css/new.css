@@ -1,0 +1,72 @@
+.chatting_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.chatting_container .chatting_header{
+    max-width: 800px;
+}
+
+.message_card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 13px;
+    position: relative;
+}
+
+.message_card .message{
+    background-color: #428376;
+    padding: 5px 15px;
+    padding-right: 55px;
+    border-radius: 0px 12px 6px 6px;
+    color: #f7f7f7;
+    position: relative;
+}
+
+.message_card .message:after,
+.message_card .message:before {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.message_card .message:after {
+    top: 0px;
+    left: -16px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #428376;
+}
+
+.message_card .message .msg{
+    margin-right: 5px;
+    
+}
+
+
+.message_card .message .time {
+    color: #c1aeae;
+    font-size: 11px;
+    position: absolute;
+    right: 6px;
+    bottom: 3px;
+}
+.message_card .user_avatar {
+    margin-right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    background-color: #cfcfdb;
+    display: flex;
+}
+.message_card .user_avatar object{
+    min-width: 26px;
+}
