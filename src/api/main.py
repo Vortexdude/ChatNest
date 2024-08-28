@@ -7,6 +7,7 @@ from src.ws import router as wsrouter
 from src.web.routes import router as web_router
 from fastapi.staticfiles import StaticFiles
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,6 +21,8 @@ def register_app() -> FastAPI:
     container.config.from_dict(Setting().model_dump())
     db = container.db()
     db.create_database()
+    # https://github.com/pyca/bcrypt/issues/684#issuecomment-1858400267
+    logging.getLogger('passlib').setLevel(logging.ERROR)
 
     app = FastAPI(container=container)
     settle_files(app)

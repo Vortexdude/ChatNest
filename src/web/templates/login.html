@@ -53,15 +53,11 @@
           aria-describedby="passwordHelpBlock"
         />
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary mb-3">
-          Confirm identity
-        </button>
-      </div>
+      <div class="mb-3"><button onclick="loginUser(event)" class="btn btn-primary mb-3">Login</button></div>
 </div>
     <div class="footer">
         <p>&copy; 2024 ChatNest. All rights reserved.</p>
     </div>
-
+    <script src="{{ url_for('static', path='/javaScript/ws.js') }}"></script>
     </body>
 </html>

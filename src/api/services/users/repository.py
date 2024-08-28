@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from src.api.models import User
 from contextlib import AbstractContextManager
 from src.api.exceptions.errors import UserNotFoundError
+from src.api.utils.security import JWTUtil
 
 
 class UserRepository:
@@ -27,7 +28,7 @@ class UserRepository:
                 raise UserNotFoundError(username)
             return user
 
-    def get_by_email(self, email: str):
+    def get_by_email(self, email: str) -> Type[User]:
         with self.session_factory() as session:
             user = session.query(User).filter(User.email == email).first()
             if not user:
@@ -39,7 +40,7 @@ class UserRepository:
             user = User(
                 username=data.username,
                 email=data.email,
-                hashed_password=data.password
+                hashed_password=JWTUtil.get_password_hash(data.password)
             )
             session.add(user)
             session.commit()

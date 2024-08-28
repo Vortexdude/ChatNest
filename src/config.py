@@ -51,6 +51,10 @@ class Setting(BaseSettings):
     DATABASE_URL: str = DATABASE().url
     template_dir: str = 'src/web/templates'
 
+    JWT_SECRET_KEY: str = 'ds454ew54c12e87'
+    TOKEN_EXPIRE_SECONDS: int = 300
+    JWT_ALGORITHM: str = 'HS256'
+
 
 @lru_cache
 def get_settings() -> Setting:

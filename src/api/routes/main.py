@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response, status
 from dependency_injector.wiring import inject, Provide
+from src.api.schema.users import Token
 from src.api.utils.containers import Container
 from src.api.services.users import UserService
 from src.api.exceptions.errors import NotFountError
@@ -38,5 +39,5 @@ def delete(user_id: str, user_service: UserService = Depends(Provide[Container.u
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 @inject
-def login_user(data: UserLogin, user_service: UserService = Depends(Provide[Container.user_service])):
+def login_user(data: UserLogin, user_service: UserService = Depends(Provide[Container.user_service])) -> Token:
     return user_service.login(data)

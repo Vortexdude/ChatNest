@@ -44,7 +44,6 @@ async function registerUser(event) {
             "accept": "application/json"
         }
     })
-    console.log(response)
     if (response.status != 201) {
         alertDiv.className = 'alert alert-danger';
         alertDiv.textContent = "User Already exists";
@@ -54,4 +53,22 @@ async function registerUser(event) {
         alertDiv.textContent = 'Register Success!';
     }
     alert_element.appendChild(alertDiv)
+}
+
+async function loginUser(event) {
+
+    var user_email = document.getElementById("email")
+    var user_password = document.getElementById("password")
+    response = await fetch("/api/v1/login", {
+        method: "POST",
+        body: JSON.stringify({
+            email: user_email.value,
+            password: user_password.value
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "accept": "application/json"
+        }
+    })
+    console.log(response.json())
 }

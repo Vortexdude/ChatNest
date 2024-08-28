@@ -1,8 +1,8 @@
 from uuid import uuid4
 from src.api.utils.database import Base
-from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy import String, Boolean, DateTime
 from datetime import datetime, timezone
+from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy import String, Boolean, DateTime, inspect
 
 
 def now_in_utc():
@@ -25,3 +25,15 @@ class User(SurrogatePK):
     is_admin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[DateTime] = mapped_column(DateTime, default=now_in_utc)
     updated_at: Mapped[DateTime] = mapped_column(DateTime, default=now_in_utc, onupdate=now_in_utc,)
+
+    def to_dict(self):
+        _data: dict = {}
+        for c in inspect(self).mapper.column_attrs:
+            _att = getattr(self, c.key)
+            if isinstance(_att, datetime):
+                continue
+            if "password" in c.key:
+                continue
+
+            _data[c.key] = _att
+        return _data

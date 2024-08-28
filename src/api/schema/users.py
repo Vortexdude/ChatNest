@@ -17,5 +17,9 @@ class UserResponse(BaseModel):
         orm_mode = True
 
 class UserLogin(BaseModel):
-    username: str
+    email: str
     password: str
+
+class Token(BaseModel):
+    access_token: str
+    type: str
