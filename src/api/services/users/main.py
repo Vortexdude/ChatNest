@@ -19,12 +19,15 @@ class UserService:
         try:
             if not data.username or not data.email or not data.password:
                 raise InvalidEntries(message="Some fields are missing")
+
             entity = self._user_repository.get_by_name(data.username)
             if entity:
                 raise UserAlreadyExists(message="user already exits")
+
             entity = self._user_repository.get_by_email(data.email)
             if entity:
                 raise UserAlreadyExists(message="user already exits")
+
         except NotFountError:
             return self._user_repository.add(data)
 
@@ -33,6 +36,7 @@ class UserService:
             self._user_repository.delete_by_id(user_id)
         except NotFountError:
             return UserNotFoundException(message="Username does not exist")
+
         else:
             return Response(status_code=204)
 
@@ -41,14 +45,17 @@ class UserService:
             user = self._user_repository.get_by_email(data.email)
         except UserNotFoundError:
             raise UserNotFoundException(message="Email does not exist")
+
         if not JWTUtil.verify_password(plain_text=data.password, hashed_pass=user.hashed_password):
             raise PasswordNotMatchException(message="Password not matched")
+
         return user
 
     def login(self, data):
         user = self.authenticate_user(data)
         if not user:
             return
+
         data = user.to_dict()
         token = JWTUtil.create_access_token(data={"email": data['email']})
         return Token(access_token=token, type='bearer')

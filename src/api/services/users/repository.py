@@ -19,6 +19,7 @@ class UserRepository:
             user = session.query(User).filter(User.id == user_id).first()
             if not user:
                 raise UserNotFoundError(user_id)
+
             return user
 
     def get_by_name(self, username: str):
@@ -26,6 +27,7 @@ class UserRepository:
             user = session.query(User).filter(User.username == username).first()
             if not user:
                 raise UserNotFoundError(username)
+
             return user
 
     def get_by_email(self, email: str) -> Type[User]:
@@ -33,6 +35,7 @@ class UserRepository:
             user = session.query(User).filter(User.email == email).first()
             if not user:
                 raise UserNotFoundError(email)
+
             return user
 
     def add(self, data) -> User:
@@ -47,10 +50,11 @@ class UserRepository:
             session.refresh(user)
             return user
 
-    def delete_by_id(self, user_id: str) -> None:  # later change the literal type of the user_id
+    def delete_by_id(self, user_id: str) -> None:
         with self.session_factory() as session:
             entity: User | None = session.query(User).filter(User.id == user_id).first()
             if not entity:
                 raise UserNotFoundError(user_id)
+
             session.delete(entity)
             session.commit()
