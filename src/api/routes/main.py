@@ -3,7 +3,7 @@ from dependency_injector.wiring import inject, Provide
 from src.api.utils.containers import Container
 from src.api.services.users import UserService
 from src.api.exceptions.errors import NotFountError
-from src.api.schema import UserCreate
+from src.api.schema import UserCreate, UserLogin
 
 
 tags = ['user_repo']
@@ -35,3 +35,8 @@ def add(data: UserCreate, user_service: UserService = Depends(Provide[Container.
 @inject
 def delete(user_id: str, user_service: UserService = Depends(Provide[Container.user_service])):
     return user_service.delete_by_user_id(user_id)
+
+@router.post("/login", status_code=status.HTTP_200_OK)
+@inject
+def login_user(data: UserLogin, user_service: UserService = Depends(Provide[Container.user_service])):
+    return user_service.login(data)

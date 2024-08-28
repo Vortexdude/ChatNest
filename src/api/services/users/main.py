@@ -1,6 +1,8 @@
 from .repository import UserRepository
-from src.api.exceptions.errors import NotFountError
+from src.api.exceptions.errors import NotFountError, UserNotFoundError
+from src.api.exceptions.exceptions import PasswordNotMatchException, UserNotFoundException
 from fastapi import Response
+
 
 
 class UserService:
@@ -30,6 +32,17 @@ class UserService:
         try:
             self._user_repository.delete_by_id(user_id)
         except NotFountError:
-            return Response(status_code=404)
+            return UserNotFoundException(message="Username does not exist")
         else:
             return Response(status_code=204)
+
+    def login(self, data):
+        try:
+            user = self._user_repository.get_by_name(data.username)
+        except UserNotFoundError:
+            raise UserNotFoundException(message="Username does not exist")
+
+        if data.password == user.hashed_password:
+            return user
+        else:
+            raise PasswordNotMatchException(message="Password not matched")

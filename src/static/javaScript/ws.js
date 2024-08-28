@@ -8,8 +8,10 @@ var ws = new WebSocket(websocket_endpoint);
 ws.onmessage = function(event) {
     var messages = document.getElementById('messages')
     var message = document.createElement('li')
+    var message_span = document.createElement('span')
     var content = document.createTextNode(event.data)
-    message.appendChild(content)
+    message_span.appendChild(content)
+    message.appendChild(message_span)
     messages.appendChild(message)
 };
 function sendMessage(event) {

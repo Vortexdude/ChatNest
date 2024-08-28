@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChatNest - Chat Application</title>
     <link href="{{ url_for('static', path='/css/style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='/css/new.css') }}" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -36,24 +37,32 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Welcome to ChatServer</h1>
-            <p class="lead">Here are the available online users</p>
-        </div>
-        <div class="box-container">
-            <div class="box">
-                <h2>Online users</h2>
-                <ul>
-                    <li><span>1</span><a href="#">User 1</a></li>
-                    <li><span>2</span><a href="#">User 2</a></li>
-                    <li><span>3</span><a href="#">User 3</a></li>
-                    <li><span>4</span><a href="#">User 4</a></li>
-                    <li><span>5</span><a href="#">User 5</a></li>
-                </ul>
-            </div>
+            <p class="lead">Please visit my server</p>
         </div>
     </div>
 
     <div class="alert alert-success" role="alert">
        Welcome <span id="ws-id"></span>
+    </div>
+    <div class="chatting_container">
+        <div class="chatting_header">
+            <div class="message_card">
+                <div class="user_avatar"><object data="{{ url_for('static', path='/svgs/person.svg') }}" type="image/svg+xml"></object></div>
+                <div class="message"><span class="msg">ServerMessage</span><span class="time">12:00 PM</span></div>
+            </div>
+            <div class="message_card">
+                <div class="user_avatar"><object data="{{ url_for('static', path='/svgs/person.svg') }}" type="image/svg+xml"></object></div>
+                <div class="message"><span class="msg">ServerMessage</span><span class="time">12:00 PM</span></div>
+            </div>
+            <div class="message_card">
+                <div class="user_avatar"><object data="{{ url_for('static', path='/svgs/person.svg') }}" type="image/svg+xml"></object></div>
+                <div class="message"><span class="msg">ServerMessage</span><span class="time">12:00 PM</span></div>
+            </div>
+            <div class="message_card">
+                <div class="user_avatar"><object data="{{ url_for('static', path='/svgs/person.svg') }}" type="image/svg+xml"></object></div>
+                <div class="message"><span class="msg">ServerMessage</span><span class="time">12:00 PM</span></div>
+            </div>
+        </div>
     </div>
     <form action="" onsubmit="sendMessage(event)">
             <input type="text" id="messageText" autocomplete="off"/>
