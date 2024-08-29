@@ -2,7 +2,7 @@
 
 async function registerUser(event) {
     var alert_element = document.getElementById("alert_message");
-    var html = '<div class="alert alert-success" role="alert">User Registered successfully</div>'
+    var html = '<div class="alert alert-success alert-dismissible fade show" role="alert">User Registered successfully <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
 
     var user_email = document.getElementById("email")
     var user_username = document.getElementById("username")
@@ -21,35 +21,48 @@ async function registerUser(event) {
         }
     })
     if (response.status != 201) {
-        alert_element.innerHTML = '<div class="alert alert-danger" role="alert">User already exists</div>'
+        alert_element.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">User already exists <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
     }
     else {
         alert_element.innerHTML = html
     }
 }
 
-async function loginUser(event) {
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-    var user_email = document.getElementById("email")
-    var user_password = document.getElementById("password")
+        // Get the username and password values
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        var alert_element = document.getElementById("alert_message");
+        var html = '<div class="alert alert-success alert-dismissible fade show" role="alert">Successfully logged In. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
+        try {
+            // Send a POST request to the server
+            const response = await fetch('/api/v1/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
 
-    var options = {
-        method: 'POST',
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "accept": "application/json"
-        },
-        body: JSON.stringify({
-            email: user_email.value,
-            password: user_password.value
-        })
-    }
+            // Check if the request was successful
+            if (!response.ok) {
+                alert_element.innerHTML = '<div class="alert alert-danger alert-dismissible fade show" role="alert">Invalid user <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+            }
+            else {
+                alert_element.innerHTML = html;
+            }
 
-    response = await fetch("/api/v1/login", options)
-    if (!response.ok){
-        console.log("Error to fetch the data")
-    }
-    else {
-        console.log(response.json())
-    }
-}
+            // Parse the JSON response
+            const data = await response.json();
+
+            // Log the access token or handle successful login
+            localStorage.setItem('accessToken', data.access_token);
+
+        } catch (error) {
+            // Handle any errors
+            console.error('Error:', error);
+            document.getElementById('message').textContent = 'Login failed. Please try again.';
+        }
+    });
