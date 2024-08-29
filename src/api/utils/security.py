@@ -3,8 +3,7 @@ from src.config import settings
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from src.api.exceptions.exceptions import TokenError
-from dependency_injector.wiring import Provide, inject
-from .containers import Container
+from .temp import Deps
 
 
 __all__ = ["JWTUtil"]
@@ -35,19 +34,15 @@ class JWTUtil:
 
 
     @staticmethod
-    def jwt_authentication(token: str):
+    async def jwt_authentication(container, token: str):
         user_id = _decode_token(token)
-        user = fetch_user(user_id)
+
+        user = Deps(container).fetch_user(user_id)
         if not user:
             raise TokenError(msg="Invalid Token")
         print(user.to_dict())
         return user
 
-
-@inject
-def fetch_user(user_id: str):
-    user_service = Provide[Container.user_service]
-    return user_service.get_user_by_id(user_id)
 
 def _decode_token(token: str) -> str:
     try:

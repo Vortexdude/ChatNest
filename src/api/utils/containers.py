@@ -4,7 +4,7 @@ from src.api.services.users import UserService, UserRepository
 
 
 class Container(containers.DeclarativeContainer):
-    wiring_config = containers.WiringConfiguration(modules=["src.api.routes.main", "src.api.middleware.jwtauth"])
+    wiring_config = containers.WiringConfiguration(modules=["src.api.routes.main", "src.api.utils.temp"])
 
     config = providers.Configuration()
 

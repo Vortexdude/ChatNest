@@ -28,9 +28,11 @@ def register_app() -> FastAPI:
     app = FastAPI(container=container)
     settle_files(app)
     app.container = container
-    app.add_middleware(AuthenticationMiddleware, backend=JWTAuthMiddleware())
+    app.add_middleware(AuthenticationMiddleware, backend=JWTAuthMiddleware(Container))
     app.include_router(router, prefix=container.config.API_VERSION_STR())
     app.include_router(wsrouter, prefix="/ws")
     app.include_router(web_router)
 
     return app
+
+

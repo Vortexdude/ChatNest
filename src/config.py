@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from functools import lru_cache
 from dotenv import load_dotenv
@@ -55,6 +56,26 @@ class Setting(BaseSettings):
     TOKEN_EXPIRE_SECONDS: int = 300
     JWT_ALGORITHM: str = 'HS256'
 
+    PROJECT_HOME: str = os.getenv("PYTHONPATH")
+    skip_routes_for_jwt_auth: list = [
+        "/api/v1/login",
+        "/api/v1/users",
+        "/api/v1/docs",
+        "/api/v1/redocs",
+        "/api/v1/openapi",
+        "/favicon.ico",
+        "/login",
+        "/register",
+        "/chat",
+        "/room",
+        "/",
+    ]
+
+    allowed_static_files: list = [
+        "static/css/*",
+        "static/javaScript/*",
+        "static/svgs/*"
+    ]
 
 @lru_cache
 def get_settings() -> Setting:
