@@ -63,6 +63,5 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         } catch (error) {
             // Handle any errors
             console.error('Error:', error);
-            document.getElementById('message').textContent = 'Login failed. Please try again.';
         }
     });

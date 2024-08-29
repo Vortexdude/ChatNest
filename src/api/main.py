@@ -2,11 +2,12 @@ import logging
 from src.api import FastAPI
 from src.config import Setting
 from src.api.routes import router
-from src.api.utils.containers import Container
 from src.ws import router as wsrouter
-from src.web.routes import router as web_router
 from fastapi.staticfiles import StaticFiles
-
+from src.api.utils.containers import Container
+from src.web.routes import router as web_router
+from src.api.middleware.jwtauth import JWTAuthMiddleware
+from starlette.middleware.authentication import AuthenticationMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,7 @@ def register_app() -> FastAPI:
     app = FastAPI(container=container)
     settle_files(app)
     app.container = container
+    app.add_middleware(AuthenticationMiddleware, backend=JWTAuthMiddleware())
     app.include_router(router, prefix=container.config.API_VERSION_STR())
     app.include_router(wsrouter, prefix="/ws")
     app.include_router(web_router)

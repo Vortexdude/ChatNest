@@ -30,8 +30,11 @@ class User(SurrogatePK):
         _data: dict = {}
         for c in inspect(self).mapper.column_attrs:
             _att = getattr(self, c.key)
+            # remove the datetime key
             if isinstance(_att, datetime):
                 continue
+
+            # remove password field
             if "password" in c.key:
                 continue
 

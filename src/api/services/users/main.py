@@ -57,5 +57,5 @@ class UserService:
             return
 
         data = user.to_dict()
-        token = JWTUtil.create_access_token(data={"email": data['email']})
+        token = JWTUtil.create_access_token(data={"user_id": data['id'], "username": data['username']})
         return Token(access_token=token, type='bearer')
