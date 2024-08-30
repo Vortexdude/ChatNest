@@ -29,8 +29,10 @@ class JWTAuthMiddleware(AuthenticationBackend):
 
 
     async def authenticate(self, request: Request):
-        if request.url.path in allowed_files():
-            print(f"[INFO] -> Skipping route to the file access")
+        if request.url.path == "/":
+            return
+        if request.url.path[1:] in allowed_files():
+            print(f"[INFO] -> Skipping route to the file access - {request.url.path}")
             return
 
         if request.url.path in settings.skip_routes_for_jwt_auth:
