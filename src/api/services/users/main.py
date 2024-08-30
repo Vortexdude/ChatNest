@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from fastapi import Response
+from src.api.schema.users import Token
 from .repository import UserRepository
+from src.api.utils.security import JWTUtil
 from src.api.exceptions.errors import NotFountError, UserNotFoundError
 from src.api.exceptions.exceptions import PasswordNotMatchException, UserNotFoundException, InvalidEntries, UserAlreadyExists
-from fastapi import Response
-from src.api.utils.security import JWTUtil
-from src.api.schema.users import Token
 
 class UserService:
     def __init__(self, user_repository: UserRepository):

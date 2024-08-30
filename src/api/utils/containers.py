@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from .database import Database
 from dependency_injector import containers, providers
 from src.api.services.users import UserService, UserRepository

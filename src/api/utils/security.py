@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import jwt
+from .temp import Deps
 from src.config import settings
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from src.api.exceptions.exceptions import TokenError
-from .temp import Deps
 
 
 __all__ = ["JWTUtil"]

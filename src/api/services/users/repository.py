@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from src.api.models import User
 from typing import Callable, Type
 from sqlalchemy.orm import Session
-from src.api.models import User
+from src.api.utils.security import JWTUtil
 from contextlib import AbstractContextManager
 from src.api.exceptions.errors import UserNotFoundError
-from src.api.utils.security import JWTUtil
 
 
 class UserRepository:

@@ -1,8 +1,10 @@
-from src.config import settings
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from fastapi import Request
-from fastapi.responses import FileResponse
 from src.web import templates
-from src.api.utils import NoSchemaRouter
+from src.config import settings
+from src.api import NoSchemaRouter
+from fastapi.responses import FileResponse
 
 router = NoSchemaRouter()
 

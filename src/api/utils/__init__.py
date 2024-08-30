@@ -1,8 +1,3 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from fastapi import APIRouter
-
-
-class NoSchemaRouter(APIRouter):
-
-    def get(self, *args, **kwargs):
-        self.include_in_schema = False
-        return self.api_route(*args, **kwargs)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from uuid import uuid4
 from src.api.utils.database import Base
 from datetime import datetime, timezone

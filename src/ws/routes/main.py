@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from fastapi import APIRouter, WebSocket
-from starlette.websockets import WebSocketDisconnect
 from src.ws.wsmanager import ConnectionManager
+from starlette.websockets import WebSocketDisconnect
 
 router = APIRouter()
 manager = ConnectionManager()

@@ -1,4 +1,5 @@
-from logging import exception
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from typing import Any
 from starlette import status
 from fastapi import HTTPException

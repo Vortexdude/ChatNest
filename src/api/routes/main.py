@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, Response, status
-from dependency_injector.wiring import inject, Provide
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from src.api.schema.users import Token
 from src.api.utils.containers import Container
 from src.api.services.users import UserService
-from src.api.exceptions.errors import NotFountError
 from src.api.schema import UserCreate, UserLogin
+from src.api.exceptions.errors import NotFountError
+from dependency_injector.wiring import inject, Provide
+from fastapi import APIRouter, Depends, Response, status
 
 
 tags = ['user_repo']

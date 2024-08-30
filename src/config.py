@@ -1,9 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import os
 from pathlib import Path
-from functools import lru_cache
-from dotenv import load_dotenv
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
+from dotenv import load_dotenv
+from functools import lru_cache
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
 project_home_path = Path(__file__).resolve().parent.parent

@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import uvicorn
-from src.api.main import register_app
 from src.config import settings
+from src.api.main import register_app
+
 app = register_app()
 
 if __name__ == "__main__":

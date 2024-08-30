@@ -3,6 +3,15 @@
 ###### version - 0.0.1
 ###### description - ChatNest application is a robust, production-ready API that leverages SQLAlchemy for ORM,
 
+# FBA Project - Backend
+
+## Docker
+
+> [!IMPORTANT]
+> Due to Docker context limitations, you cannot successfully build a image using a Dockerfile in the current directory
+
+1. Make sure you're at the root of the project
+
 
 ## Overview
 
