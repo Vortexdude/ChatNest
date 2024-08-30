@@ -71,7 +71,7 @@ class Setting(BaseSettings):
         "/register",
         "/chat",
         "/room",
-        "/",
+        "/ws"
     ]
 
     allowed_static_files: list = [
