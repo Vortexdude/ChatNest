@@ -51,6 +51,7 @@ class Setting(BaseSettings):
     DEBUG: bool = False
     DATABASE_URL: str = DATABASE().url
     template_dir: str = 'src/web/templates'
+    FAVICON_PATH: str = "src/static/svgs/favicon.svg"
 
     JWT_SECRET_KEY: str = 'ds454ew54c12e87'
     TOKEN_EXPIRE_SECONDS: int = 300
@@ -83,4 +84,3 @@ def get_settings() -> Setting:
 
 
 settings = get_settings()
-

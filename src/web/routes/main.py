@@ -1,20 +1,18 @@
-from fastapi import APIRouter, Request
+from src.config import settings
+from fastapi import Request
 from fastapi.responses import FileResponse
 from src.web import templates
+from src.api.utils import NoSchemaRouter
 
-router = APIRouter()
-
-favicon_path = "src/static/svgs/favicon.svg"
+router = NoSchemaRouter()
 
 @router.get("/")
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
-@router.get('/favicon.ico', include_in_schema=False)
+@router.get('/favicon.ico')
 async def favicon():
-    return FileResponse(favicon_path)
-
+    return FileResponse(settings.FAVICON_PATH)
 
 @router.get("/login")
 async def home(request: Request):
