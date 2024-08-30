@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from fastapi import APIRouter
 from importlib import import_module
-# from src.api.routes import main  # add the files not the route object
 
 ENABLE_ROUTE = ["main"]
 router = APIRouter()

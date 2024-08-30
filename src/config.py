@@ -1,6 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import os
 from pathlib import Path
-from functools import lru_cache
+from typing import Optional
 from dotenv import load_dotenv
+from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 load_dotenv()
@@ -11,7 +15,7 @@ class PostgresSecret(BaseSettings):
     user: str
     password: str
     db: str
-    host: str = "127.0.0.1"
+    host: Optional[str] = '127.0.0.1'
     port: int
 
     model_config = SettingsConfigDict(env_prefix="POSTGRES_", )
@@ -48,7 +52,33 @@ class Setting(BaseSettings):
     SERVER_PORT: int = 5000
     DEBUG: bool = False
     DATABASE_URL: str = DATABASE().url
+    template_dir: str = 'src/web/templates'
+    FAVICON_PATH: str = "src/static/svgs/favicon.svg"
 
+    JWT_SECRET_KEY: str = 'ds454ew54c12e87'
+    TOKEN_EXPIRE_SECONDS: int = 300
+    JWT_ALGORITHM: str = 'HS256'
+
+    PROJECT_HOME: str = os.getenv("PYTHONPATH")
+    skip_routes_for_jwt_auth: list = [
+        "/api/v1/login",
+        "/api/v1/users",
+        "/api/v1/docs",
+        "/api/v1/redocs",
+        "/api/v1/openapi",
+        "/favicon.ico",
+        "/login",
+        "/register",
+        "/chat",
+        "/room",
+        "/",
+    ]
+
+    allowed_static_files: list = [
+        "static/css/*",
+        "static/javaScript/*",
+        "static/svgs/*"
+    ]
 
 @lru_cache
 def get_settings() -> Setting:
@@ -56,4 +86,3 @@ def get_settings() -> Setting:
 
 
 settings = get_settings()
-

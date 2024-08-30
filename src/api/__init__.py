@@ -4,7 +4,7 @@ using the dependency_injection module
 """
 
 from fastapi import FastAPI as BaseApp
-
+from fastapi import APIRouter
 
 class FastAPI(BaseApp):
     def __init__(self, container, *args, **kwargs):
@@ -16,3 +16,10 @@ class FastAPI(BaseApp):
             'openapi_url': container.config.OPENAPI_URL(),
         }
         super().__init__(*args, **conf, **kwargs)
+
+
+class NoSchemaRouter(APIRouter):
+
+    def get(self, *args, **kwargs):
+        self.include_in_schema = False
+        return self.api_route(*args, **kwargs)
