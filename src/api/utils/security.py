@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import jwt
-from .temp import Deps
 from src.config import settings
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
@@ -34,28 +33,20 @@ class JWTUtil:
         token = jwt.encode(to_encode, settings.JWT_SECRET_KEY, settings.JWT_ALGORITHM)
         return token
 
-
     @staticmethod
-    async def jwt_authentication(container, token: str):
-        user_id = _decode_token(token)
+    def decode_token(token: str):
+        try:
+            payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+            user_id = payload['user_id']
+            if not user_id:
+                print("[Warning] No user id found in the payload")
+                raise TokenError(msg="Invalid Token")
+        except jwt.exceptions.ExpiredSignatureError:
+            print("[DEBUG] Signature Expired")
+            raise TokenError(msg="Token is expired")
 
-        user = Deps(container).fetch_user(user_id)
-        if not user:
+        except (jwt.exceptions.PyJWTError, Exception):
+            print("[Error] Unknown Exception")
             raise TokenError(msg="Invalid Token")
-        print(user.to_dict())
-        return user
 
-
-def _decode_token(token: str) -> str:
-    try:
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
-        user_id = payload['user_id']
-        if not user_id:
-            raise TokenError(msg="Invalid Token")
-    except jwt.exceptions.ExpiredSignatureError:
-        raise TokenError(msg="Token is expired")
-
-    except (jwt.exceptions.PyJWTError, Exception):
-        raise TokenError(msg="Invalid Token")
-
-    return user_id
+        return user_id

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from src.api.schema.users import Token
-from src.api.utils.containers import Container
 from src.api.services.users import UserService
+from src.api.utils.containers import Container
 from src.api.schema import UserCreate, UserLogin
 from src.api.exceptions.errors import NotFountError
 from dependency_injector.wiring import inject, Provide

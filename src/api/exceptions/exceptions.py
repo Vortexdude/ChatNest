@@ -46,4 +46,5 @@ class TokenError(HTTPError):
     code = status.HTTP_401_UNAUTHORIZED
 
     def __init__(self, *, msg: str = 'Not Authenticated', headers: dict[str, Any] | None = None):
-        super().__init__(code=self.code, msg=msg, headers=headers or {'WWW-Authenticate': 'Bearer'})
+        self.msg = msg
+        super().__init__(code=self.code, msg=self.msg, headers=headers or {'WWW-Authenticate': 'Bearer'})

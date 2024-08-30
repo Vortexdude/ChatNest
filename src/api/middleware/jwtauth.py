@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from glob import glob
 from typing import Any
-from src.config import settings
 from fastapi import Request, status
 from src.api.utils.security import JWTUtil
-from starlette.authentication import AuthenticationBackend, AuthCredentials, AuthenticationError
+from src.api.utils.containers import Container
+from src.api.utils.routes import by_pass_route
+from src.api.exceptions.exceptions import TokenError
+from dependency_injector.wiring import inject, Provide
+from starlette.authentication import (
+    AuthenticationBackend, AuthCredentials, AuthenticationError, SimpleUser
+)
+
+
+@inject
+def get_user(user_id: str, user_service = Provide[Container.user_service]):
+    return user_service.get_user_by_id(user_id)
 
 
 class _AuthError(AuthenticationError):
@@ -14,32 +23,12 @@ class _AuthError(AuthenticationError):
         self.msg = msg
         self.headers = headers
 
-def allowed_files(files: list = settings.allowed_static_files) -> list:
-    _allowed_file = []
-
-    for directory in files:
-        files = glob(directory, root_dir="src/")
-        _allowed_file.extend(files)
-    return _allowed_file
 
 class JWTAuthMiddleware(AuthenticationBackend):
 
-    def __init__(self, container):
-        self.container = container
-
-
     async def authenticate(self, request: Request):
-        if request.url.path == "/":
+        if by_pass_route(request.url.path):
             return
-        if request.url.path[1:] in allowed_files():
-            print(f"[INFO] -> Skipping route to the file access - {request.url.path}")
-            return
-
-        if request.url.path in settings.skip_routes_for_jwt_auth:
-            print(f"[Warning] -> Skipping the route {request.url.path} for JWT authentication")
-            return
-
-
 
         auth = request.headers.get("Authorization")
         if not auth:
@@ -52,6 +41,17 @@ class JWTAuthMiddleware(AuthenticationBackend):
         scheme, token = auth.split()
         if scheme.lower() != 'bearer':
             return
+        try:
+            user_id = JWTUtil.decode_token(token=token)
+            user = get_user(user_id)
 
-        user = await JWTUtil.jwt_authentication(container=self.container, token=token)
-        return AuthCredentials(['authenticated']), user
+        except TokenError as exc:
+            raise _AuthError(code=exc.code, msg=exc.msg, headers=exc.headers)
+
+        except Exception as e:
+            raise _AuthError(
+                code=getattr(e, 'code', 500),
+                msg=getattr(e, "msg", "Internal Server Error")
+            )
+
+        return AuthCredentials(["authenticated"]), SimpleUser(user.username)
